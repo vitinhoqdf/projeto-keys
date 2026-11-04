@@ -1,0 +1,12 @@
+{
+    "name": "key-bot",
+    "main": "bot.js",
+    "scripts": {
+        "start": "node bot.js"
+    },
+    "dependencies": {
+        "dotenv": "^18.0.9",
+        "node-fetch": "^2.7.0",
+        "node-telegram-bot-api": "^0.66.0"
+    }
+}
