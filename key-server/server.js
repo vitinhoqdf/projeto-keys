@@ -14,6 +14,7 @@ function salvar(db) {
 }
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(express.json());
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
