@@ -50,4 +50,4 @@ bot.onText(/\/resetar (.+)/, async (msg, match) => {
     bot.sendMessage(msg.chat.id, data.ok ? "🔄 Dispositivo da key resetado." : "❌ Key não encontrada.");
 });
 
-console.log("Bot rodando...");
+console.log("Bot rodando... redeploy teste");
