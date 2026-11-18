@@ -8,15 +8,21 @@ const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 const SERVER = process.env.SERVER_URL;
 const ADMINS = (process.env.ADMINS || "").split(",").map(s => s.trim());
 
+const PREFIXOS = {
+    "7026143329": "VITIN-XITS",
+    "1912313435": "RYAN-XITS",
+};
+
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 bot.onText(/\/gerar (\d+)/, async (msg, match) => {
     if (!ADMINS.includes(String(msg.from.id))) return;
     const dias = match[1];
+    const prefixo = PREFIXOS[String(msg.from.id)] || null;
     const r = await fetch(`${SERVER}/admin/gerar`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: ADMIN_TOKEN },
-        body: JSON.stringify({ dias: Number(dias) }),
+        body: JSON.stringify({ dias: Number(dias), prefixo }),
     });
     const data = await r.json();
     bot.sendMessage(msg.chat.id, `✅ Key gerada (${dias} dias):\n\`${data.key}\``, { parse_mode: "Markdown" });

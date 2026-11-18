@@ -29,7 +29,9 @@ function checarAdmin(req, res, next) {
 
 app.post("/admin/gerar", checarAdmin, (req, res) => {
     const dias = req.body.dias || 30;
-    const key = crypto.randomBytes(8).toString("hex").toUpperCase().match(/.{4}/g).join("-");
+    const prefixo = req.body.prefixo;
+    const parteAleatoria = crypto.randomBytes(8).toString("hex").toUpperCase().match(/.{4}/g).join("-");
+    const key = prefixo ? `${prefixo}-${parteAleatoria}` : parteAleatoria;
     const db = carregar();
     db[key] = { deviceId: null, expiresAt: Date.now() + dias * 86400000, banned: false };
     salvar(db);
