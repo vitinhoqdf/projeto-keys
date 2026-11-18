@@ -11,7 +11,7 @@ const ADMINS = (process.env.ADMINS || "").split(",").map(s => s.trim());
 const PREFIXOS = {
     "7026143329": "VITIN-XITS",
     "1912313435": "RYAN-XITS",
-};
+}; 
 
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
