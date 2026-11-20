@@ -33,7 +33,7 @@ app.post("/admin/gerar", checarAdmin, (req, res) => {
     const parteAleatoria = crypto.randomBytes(4).toString("hex").toUpperCase().match(/.{4}/g).join("-");
     const key = prefixo ? `${prefixo}-${parteAleatoria}` : parteAleatoria;
     const db = carregar();
-    db[key] = { deviceId: null, expiresAt: Date.now() + dias * 86400000, banned: false };
+    db[key] = { deviceId: null, duracaoDias: dias, expiresAt: null, banned: false };
     salvar(db);
     res.json({ key });
 });
@@ -50,6 +50,7 @@ app.post("/admin/resetar", checarAdmin, (req, res) => {
     const db = carregar();
     if (!db[req.body.key]) return res.json({ ok: false });
     db[req.body.key].deviceId = null;
+    db[req.body.key].expiresAt = null;
     salvar(db);
     res.json({ ok: true });
 });
@@ -61,14 +62,17 @@ app.post("/validar", (req, res) => {
     const db = carregar();
     const row = db[key];
     if (!row || row.banned) return res.json({ ok: false, msg: "Key inválida" });
-    if (row.expiresAt < Date.now()) return res.json({ ok: false, msg: "Key expirada" });
 
     if (!row.deviceId) {
         row.deviceId = deviceId;
+        row.expiresAt = Date.now() + row.duracaoDias * 86400000;
         salvar(db);
     } else if (row.deviceId !== deviceId) {
         return res.json({ ok: false, msg: "Key já em uso em outro aparelho" });
     }
+
+    if (row.expiresAt < Date.now()) return res.json({ ok: false, msg: "Key expirada" });
+
     res.json({ ok: true, expira: row.expiresAt });
 });
 
