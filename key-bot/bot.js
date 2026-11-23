@@ -27,7 +27,7 @@ bot.onText(/\/gerar (\d+)/, async (msg, match) => {
         body: JSON.stringify({ dias: Number(dias), prefixo }),
     });
     const data = await r.json();
-    bot.sendMessage(msg.chat.id, `✅ Key gerada (${dias} dias):\n\`${data.key}\``, { parse_mode: "Markdown" });
+    bot.sendMessage(msg.chat.id, `\n\`${data.key}\``, { parse_mode: "Markdown" });
 });
 
 bot.onText(/\/banir (.+)/, async (msg, match) => {
